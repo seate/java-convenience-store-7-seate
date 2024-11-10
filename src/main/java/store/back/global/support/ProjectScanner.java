@@ -51,7 +51,7 @@ public class ProjectScanner {
         }
     }
 
-    private Set<Class<?>> getClasses(String packageName) throws IOException, ClassNotFoundException {
+    private Set<Class<?>> getClasses(final String packageName) throws IOException, ClassNotFoundException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         if (classLoader == null) {
             throw new IllegalStateException("Cannot get ClassLoader.");
@@ -62,7 +62,7 @@ public class ProjectScanner {
         return traversalResources(packageName, resources);
     }
 
-    private Set<Class<?>> traversalResources(String packageName, Enumeration<URL> resources)
+    private Set<Class<?>> traversalResources(final String packageName, final Enumeration<URL> resources)
             throws ClassNotFoundException, IOException {
         Set<Class<?>> classes = new HashSet<>();
         while (resources.hasMoreElements()) {
@@ -74,7 +74,8 @@ public class ProjectScanner {
         return classes;
     }
 
-    private void executeByProtocol(URL resource, String packageName, String protocol, Set<Class<?>> classes)
+    private void executeByProtocol(final URL resource, final String packageName, final String protocol,
+                                   Set<Class<?>> classes)
             throws ClassNotFoundException, IOException {
         if ("file".equals(protocol)) {
             String filePath = URLDecoder.decode(resource.getPath(), StandardCharsets.UTF_8);
@@ -84,7 +85,7 @@ public class ProjectScanner {
         }
     }
 
-    private void findClassesInDirectory(String packageName, String directoryPath, Set<Class<?>> classes)
+    private void findClassesInDirectory(final String packageName, final String directoryPath, Set<Class<?>> classes)
             throws ClassNotFoundException {
         File directory = new File(directoryPath);
         if (!directory.exists()) {
@@ -97,7 +98,8 @@ public class ProjectScanner {
         processFiles(packageName, files, classes);
     }
 
-    private void processFiles(String packageName, File[] files, Set<Class<?>> classes) throws ClassNotFoundException {
+    private void processFiles(final String packageName, final File[] files, Set<Class<?>> classes)
+            throws ClassNotFoundException {
         for (File file : files) {
             if (file.isDirectory()) {
                 findClassesInDirectory(packageName + "." + file.getName(), file.getAbsolutePath(), classes);
@@ -107,7 +109,8 @@ public class ProjectScanner {
         }
     }
 
-    private void addClassToSet(String packageName, File file, Set<Class<?>> classes) throws ClassNotFoundException {
+    private void addClassToSet(final String packageName, final File file, Set<Class<?>> classes)
+            throws ClassNotFoundException {
         String fileName = file.getName().substring(0, file.getName().length() - 6);
         if (EXCLUDE_CLASS_NAME.contains(fileName)) {
             return;
@@ -117,7 +120,7 @@ public class ProjectScanner {
         classes.add(Class.forName(className));
     }
 
-    private void findClassesInJar(String packageName, URL resource, Set<Class<?>> classes)
+    private void findClassesInJar(final String packageName, final URL resource, Set<Class<?>> classes)
             throws IOException, ClassNotFoundException {
         JarURLConnection jarConn = (JarURLConnection) resource.openConnection();
         try (JarFile jarFile = jarConn.getJarFile()) {
@@ -131,7 +134,8 @@ public class ProjectScanner {
         }
     }
 
-    private void registerClassInJar(String entryName, String path, JarEntry entry, Set<Class<?>> classes)
+    private void registerClassInJar(final String entryName, final String path, final JarEntry entry,
+                                    Set<Class<?>> classes)
             throws ClassNotFoundException {
         if (entryName.startsWith(path) && entryName.endsWith(".class") && !entry.isDirectory()) {
             String className = entryName.replace('/', '.').substring(0, entryName.length() - 6);
@@ -140,7 +144,7 @@ public class ProjectScanner {
     }
 
     private static Set<Class<?>> findClassesForAnnotation(Set<Class<?>> classes,
-                                                          Class<? extends Annotation> annotationClass) {
+                                                          final Class<? extends Annotation> annotationClass) {
         return classes.stream()
                 .filter(clazz -> clazz.isAnnotationPresent(annotationClass))
                 .collect(Collectors.toSet());
