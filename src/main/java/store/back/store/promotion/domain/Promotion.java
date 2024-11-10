@@ -50,7 +50,7 @@ public class Promotion {
     }
 
 
-    public Boolean isEqualToName(String name) {
+    public Boolean isEqualToName(final String name) {
         return this.name.equals(name);
     }
 

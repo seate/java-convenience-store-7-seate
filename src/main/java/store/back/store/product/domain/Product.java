@@ -15,18 +15,18 @@ public class Product {
         this.price = price;
     }
 
-    private void validate(String name, Integer price) {
+    private void validate(final String name, final Integer price) {
         validateNameLength(name);
         validatePrice(price);
     }
 
-    private void validateNameLength(String name) {
+    private void validateNameLength(final String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalStateException("상품 이름은 1자 이상이어야 합니다.");
         }
     }
 
-    private void validatePrice(Integer price) {
+    private void validatePrice(final Integer price) {
         if (price == null || price <= 0) {
             throw new IllegalStateException("가격은 0원 초과여야 합니다.");
         }

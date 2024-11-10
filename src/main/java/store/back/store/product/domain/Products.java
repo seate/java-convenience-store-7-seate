@@ -18,7 +18,7 @@ public class Products {
     }
 
 
-    public Product findByName(String name) {
+    public Product findByName(final String name) {
         return products
                 .stream()
                 .filter(product -> product.getName().equals(name))

@@ -22,7 +22,7 @@ public class Promotions {
     }
 
 
-    public Promotion findByName(String promotionName) {
+    public Promotion findByName(final String promotionName) {
         return promotions
                 .stream()
                 .filter(promotion -> promotion.isEqualToName(promotionName))
