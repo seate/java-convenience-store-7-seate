@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import store.back.store.order.domain.ProductNameQuantity;
 import store.front.exception.InvalidOrderRequestException;
+import store.global.status.Agreement;
 
 public class StoreRequestParser {
 
@@ -36,5 +37,9 @@ public class StoreRequestParser {
         }
 
         return productNameQuantities;
+    }
+
+    public static Agreement parseAgreement(String isMembership) {
+        return Agreement.of(isMembership);
     }
 }
