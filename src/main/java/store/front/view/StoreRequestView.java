@@ -44,4 +44,13 @@ public class StoreRequestView {
 
         return agreement;
     }
+
+    public static Agreement buyMoreProducts() {
+        System.out.println("더 구매하시겠습니까? (Y/N)");
+        Agreement agreement = StoreRequestParser.parseAgreement(Console.readLine());
+        System.out.println();
+
+        return agreement;
+    }
+
 }
