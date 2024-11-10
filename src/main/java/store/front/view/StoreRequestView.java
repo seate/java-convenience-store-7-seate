@@ -36,4 +36,12 @@ public class StoreRequestView {
 
         return agreement;
     }
+
+    public static Agreement isMembershipApplied() {
+        System.out.println("멤버십 할인을 받으시겠습니까? (Y/N)");
+        Agreement agreement = StoreRequestParser.parseAgreement(Console.readLine());
+        System.out.println();
+
+        return agreement;
+    }
 }
