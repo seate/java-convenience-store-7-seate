@@ -7,7 +7,7 @@ import store.back.store.promotion.entity.entity.PromotionEntity;
 
 public class PromotionEntityParser {
 
-    public static PromotionEntity parseEntity(String promotionEntity) {
+    public static PromotionEntity parseEntity(final String promotionEntity) {
         List<String> infos = List.of(promotionEntity.split(","));
 
         return new PromotionEntity(

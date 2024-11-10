@@ -39,7 +39,7 @@ public class StoreRequestParser {
         return productNameQuantities;
     }
 
-    public static Agreement parseAgreement(String isMembership) {
+    public static Agreement parseAgreement(final String isMembership) {
         return Agreement.of(isMembership);
     }
 }

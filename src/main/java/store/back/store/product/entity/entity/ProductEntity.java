@@ -22,7 +22,7 @@ public class ProductEntity {
         this.promotionName = promotionName;
     }
 
-    private void validate(String name, Integer price, Integer quantity) {
+    private void validate(final String name, final Integer price, final Integer quantity) {
         validateNameLength(name);
         validatePrice(price);
         validateQuantity(quantity);

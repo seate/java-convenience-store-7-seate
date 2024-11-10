@@ -6,7 +6,7 @@ import store.back.store.product.entity.entity.ProductEntity;
 
 public class ProductEntityParser {
 
-    public static ProductEntity parseEntity(String productEntity) {
+    public static ProductEntity parseEntity(final String productEntity) {
         List<String> infos = List.of(productEntity.split(","));
 
         if (Objects.equals(infos.get(3), "null")) {
