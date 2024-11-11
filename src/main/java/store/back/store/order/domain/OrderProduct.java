@@ -1,7 +1,7 @@
 package store.back.store.order.domain;
 
+import store.back.store.order.exception.OrderQuantityUnderZeroException;
 import store.back.store.product.domain.Product;
-import store.back.store.order.exception.NoProductInOrderException;
 
 public class OrderProduct {
 
@@ -27,7 +27,7 @@ public class OrderProduct {
 
     private void validateQuantity(final Integer totalQuantity) {
         if (totalQuantity <= 0) {
-            throw new NoProductInOrderException();
+            throw new OrderQuantityUnderZeroException();
         }
     }
 
