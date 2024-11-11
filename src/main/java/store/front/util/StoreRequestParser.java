@@ -10,7 +10,7 @@ import store.global.status.Agreement;
 
 public class StoreRequestParser {
 
-    private static final Pattern itemPattern = Pattern.compile("\\[([a-zA-Z가-힣]+)-([1-9]+)]");
+    private static final Pattern itemPattern = Pattern.compile("\\[([a-zA-Z가-힣]+)-([0-9]+)]");
     private static final Pattern orderPattern = Pattern
             .compile(String.format("^%s(,%s)*$", itemPattern.pattern(), itemPattern.pattern()));
 

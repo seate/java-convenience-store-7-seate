@@ -13,7 +13,7 @@ class StoreRequestParserTest {
     @Test
     void 정상_파싱() {
         // given
-        String input = "[콜라-3],[에너지바-5]";
+        String input = "[콜라-3],[에너지바-5],[컵라면-10]";
 
         // when
         List<ProductNameQuantity> productNameQuantities = StoreRequestParser.parseOrder(input);// 올바른 형식
@@ -25,6 +25,9 @@ class StoreRequestParserTest {
         ProductNameQuantity second = productNameQuantities.get(1);
         Assertions.assertThat(second.productName()).isEqualTo("에너지바");
         Assertions.assertThat(second.quantity()).isEqualTo(5);
+        ProductNameQuantity third = productNameQuantities.get(2);
+        Assertions.assertThat(third.productName()).isEqualTo("컵라면");
+        Assertions.assertThat(third.quantity()).isEqualTo(10);
     }
 
     @ParameterizedTest
