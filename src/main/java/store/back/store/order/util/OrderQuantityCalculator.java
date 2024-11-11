@@ -30,7 +30,7 @@ public class OrderQuantityCalculator {
         if (promotedQuantity < newRequestQuantity) { // 없어서 못 줘
             return exceedPromotedQuantity(orderedItem, setQuantity, promotedQuantity / setQuantity, freeQuantity);
         }
-        return InRangePromotedQuantity(orderedItem, requestQuantity, setQuantity, buyQuantity, newRequestQuantity,
+        return InRangePromotedQuantity(orderedItem, setQuantity, buyQuantity, newRequestQuantity,
                 requestQuantity % setQuantity, freeQuantity);
     }
 
@@ -55,18 +55,17 @@ public class OrderQuantityCalculator {
         return new CalculatedQuantities(promotedQuantity, promotedQuantity, setCount * freeQuantity);
     }
 
-    private static CalculatedQuantities InRangePromotedQuantity(OrderedItem orderedItem, Integer requestQuantity,
-                                                                Integer setQuantity, Integer buyQuantity,
-                                                                Integer appendedQuantity, Integer remainQuantity,
-                                                                Integer freeQuantity) {
-        if (orderedItem.fillLackQuantity() && buyQuantity <= remainQuantity) { // 더 받을거야 && 더 받을 수 있어
+    private static CalculatedQuantities InRangePromotedQuantity(OrderedItem orderedItem, Integer setQuantity,
+                                                                Integer buyQuantity, Integer appendedQuantity,
+                                                                Integer remainQuantity, Integer freeQuantity) {
+        Integer requestQuantity = orderedItem.quantity();
+        if (orderedItem.fillLackQuantity() && buyQuantity <= remainQuantity) { // 더 받음 && 더 받을 수 있음
             if (!orderedItem.checkedFillable()) {
                 throw new NeedMorePromotedProductException(orderedItem.productName(), setQuantity - remainQuantity);
             }
             return new CalculatedQuantities(appendedQuantity, appendedQuantity,
                     appendedQuantity / setQuantity * freeQuantity);
-        }
-        // (개수 안 맞음 && 더 받을 수 없음) || (개수 맞음 && 더 받지 않음)
+        } // (개수 안 맞음 && 더 받을 수 없음) || (더 받을 수 있음 && 더 받지 않음)
         return new CalculatedQuantities(requestQuantity, (requestQuantity / setQuantity) * setQuantity,
                 (requestQuantity / setQuantity) * freeQuantity);
     }
