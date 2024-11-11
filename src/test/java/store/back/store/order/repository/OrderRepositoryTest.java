@@ -6,12 +6,12 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import store.back.store.order.domain.Order;
-import store.global.dto.ProductNameQuantity;
 import store.back.store.product.domain.Products;
 import store.back.store.product.entity.repository.ProductEntityRepository;
 import store.back.store.promotion.domain.Promotions;
 import store.back.store.promotion.entity.repository.PromotionEntityRepository;
 import store.back.store.storage.domain.Storage;
+import store.global.dto.request.OrderedItem;
 
 class OrderRepositoryTest {
 
@@ -34,11 +34,11 @@ class OrderRepositoryTest {
     @Test
     void 정상_저장() {
         // given
-        List<ProductNameQuantity> productNameQuantities = List.of(
-                new ProductNameQuantity("콜라", 3),
-                new ProductNameQuantity("사이다", 3)
+        List<OrderedItem> orderedItems = List.of(
+                new OrderedItem("콜라", 3, false, true, false, false),
+                new OrderedItem("사이다", 3, false, true, false, false)
         );
-        Order order = new Order(products, promotions, storage, productNameQuantities, false, true, false, false);
+        Order order = new Order(products, promotions, storage, orderedItems);
         UUID uuid = order.getUuid();
 
         // when

@@ -13,6 +13,7 @@ import store.front.view.StoreResponseView;
 import store.global.communication.CustomCommunicationCode;
 import store.global.communication.CustomCommunicationData;
 import store.global.communication.Telecommunication;
+import store.global.dto.request.OrderedItem;
 import store.global.dto.request.OrderRequestDTO;
 import store.global.dto.request.PayRequestDTO;
 import store.global.dto.response.CurrentStorageResponseDTOs;
@@ -133,30 +134,26 @@ public class FrontApplication {
 
     private static UUID handleNeedMorePromotedProduct(CustomCommunicationData data, OrderRequestDTO orderRequestDTO) {
         LackProductData lackProduct = (LackProductData) data.response();
-        Agreement agreement = StoreRequestView
+        OrderedItem promotionProductAddable = StoreRequestView
                 .isPromotionProductAddable(lackProduct.productName(), lackProduct.quantity());
 
-        if (agreement.isAgreed()) {
-            return processUpdatedOrderRequest(OrderRequestDTO.fillLackQuantity(orderRequestDTO));
-        }
-        return processUpdatedOrderRequest(OrderRequestDTO.notFillLackQuantity(orderRequestDTO));
+        return processUpdatedOrderRequest(
+                OrderRequestDTO.changeItemByProductName(orderRequestDTO, promotionProductAddable));
     }
 
     private static UUID handleLackPromotedProduct(CustomCommunicationData data, OrderRequestDTO orderRequestDTO) {
         LackProductData lackProduct = (LackProductData) data.response();
-        Agreement agreement = StoreRequestView.payWhenLackPromotionProduct(lackProduct.productName(),
-                lackProduct.quantity());
+        OrderedItem orderedItem = StoreRequestView.payWhenLackPromotionProduct(
+                lackProduct.productName(), lackProduct.quantity());
 
-        if (agreement.isAgreed()) {
-            return processUpdatedOrderRequest(OrderRequestDTO.agreeWithLack(orderRequestDTO));
-        }
-        return processUpdatedOrderRequest(OrderRequestDTO.disagreeWithLack(orderRequestDTO));
+        return processUpdatedOrderRequest(
+                OrderRequestDTO.changeItemByProductName(orderRequestDTO, orderedItem));
     }
 
     private static UUID processUpdatedOrderRequest(OrderRequestDTO updatedRequest) {
         CustomCommunicationData data = Telecommunication.requestToBack(updatedRequest);
-        if (data.errorMessage().equals(new NoProductInOrderException().getMessage())) {
-            throw new PhaseTerminateException();
+        if (data.code() == CustomCommunicationCode.ERROR) {
+            return handleOrderError(data, updatedRequest);
         }
 
         OrderResponseDTO orderResponseDTO = (OrderResponseDTO) data.response();

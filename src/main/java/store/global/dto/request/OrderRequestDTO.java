@@ -1,43 +1,22 @@
 package store.global.dto.request;
 
+import java.util.ArrayList;
 import java.util.List;
-import store.global.dto.ProductNameQuantity;
+import java.util.stream.IntStream;
+import store.back.store.storage.exception.ProductNotExistException;
 
-public record OrderRequestDTO(List<OrderItemRequestDTO> orderItemRequestDTOS,
-                              Boolean lackAgreement, Boolean fillLackQuantity,
-                              Boolean checkedFillable, Boolean checkedLackable) {
+public record OrderRequestDTO(List<OrderedItem> orderedItems) {
 
-    private static OrderRequestDTO create(List<ProductNameQuantity> productNameQuantities,
-                                          Boolean lackAgreement, Boolean fillLackQuantity,
-                                          Boolean checkedFillable, Boolean checkedLackable) {
-        List<OrderItemRequestDTO> orderItemRequestDTOS = productNameQuantities.stream()
-                .map(productNameQuantity -> new OrderItemRequestDTO(productNameQuantity.productName(),
-                        productNameQuantity.quantity()))
-                .toList();
+    public static OrderRequestDTO changeItemByProductName(OrderRequestDTO orderRequestDTO,
+                                                          OrderedItem orderedItem) {
+        List<OrderedItem> orderedItems = new ArrayList<>(orderRequestDTO.orderedItems());
 
-        return new OrderRequestDTO(orderItemRequestDTOS, lackAgreement, fillLackQuantity,
-                checkedFillable, checkedLackable);
-    }
+        int index = IntStream.range(0, orderedItems.size())
+                .filter(i -> orderedItems.get(i).productName().equals(orderedItem.productName()))
+                .findFirst()
+                .orElseThrow(ProductNotExistException::new);
+        orderedItems.set(index, orderedItem);
 
-    public static OrderRequestDTO createDefault(List<ProductNameQuantity> productNameQuantities) {
-        return create(productNameQuantities, false, true, false, false);
-    }
-
-
-    public static OrderRequestDTO fillLackQuantity(OrderRequestDTO orderRequestDTO) {
-        return new OrderRequestDTO(orderRequestDTO.orderItemRequestDTOS, false, true, true, false);
-
-    }
-
-    public static OrderRequestDTO notFillLackQuantity(OrderRequestDTO orderRequestDTO) {
-        return new OrderRequestDTO(orderRequestDTO.orderItemRequestDTOS, false, false, true, false);
-    }
-
-    public static OrderRequestDTO agreeWithLack(OrderRequestDTO orderRequestDTO) {
-        return new OrderRequestDTO(orderRequestDTO.orderItemRequestDTOS, true, false, false, true);
-    }
-
-    public static OrderRequestDTO disagreeWithLack(OrderRequestDTO orderRequestDTO) {
-        return new OrderRequestDTO(orderRequestDTO.orderItemRequestDTOS, false, false, false, true);
+        return new OrderRequestDTO(orderedItems);
     }
 }

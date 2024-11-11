@@ -6,7 +6,7 @@ import store.back.store.product.domain.Product;
 import store.back.store.product.domain.Products;
 import store.back.store.promotion.domain.Promotions;
 import store.back.store.storage.domain.Storage;
-import store.global.dto.ProductNameQuantity;
+import store.global.dto.request.OrderedItem;
 
 public class Order {
 
@@ -15,18 +15,14 @@ public class Order {
     private final List<OrderLine> orderLines;
 
     public Order(Products products, Promotions promotions, Storage storage,
-                 List<ProductNameQuantity> productNameQuantities,
-                 Boolean lackAgreement, Boolean fillLackQuantity,
-                 Boolean checkedFillable, Boolean checkedLackable) {
+                 List<OrderedItem> orderedItems) {
         this.uuid = UUID.randomUUID();
-        this.orderLines = productNameQuantities.stream().map(productNameQuantity -> {
-            Product product = products.findByName(productNameQuantity.productName());
-            Integer quantity = productNameQuantity.quantity();
+        this.orderLines = orderedItems.stream().map(orderedItem -> {
+            Product product = products.findByName(orderedItem.productName());
             return storage.findPromotionNameByProductName(product.getName())
-                    .map(name -> OrderLine.createPromotionedOrderLine(product, promotions.findByName(name),
-                            storage, quantity, lackAgreement, fillLackQuantity,
-                            checkedFillable, checkedLackable))
-                    .orElseGet(() -> OrderLine.createNotPromotionedOrderLine(product, storage, quantity));
+                    .map(name -> OrderLine.createPromotionedOrderLine(product, promotions.findByName(name), storage,
+                            orderedItem))
+                    .orElseGet(() -> OrderLine.createNotPromotionedOrderLine(product, storage, orderedItem));
         }).toList();
     }
 

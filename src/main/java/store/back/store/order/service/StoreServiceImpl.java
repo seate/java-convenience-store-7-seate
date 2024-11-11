@@ -5,7 +5,6 @@ import store.back.global.annotation.Service;
 import store.back.store.order.domain.Membership;
 import store.back.store.order.domain.Order;
 import store.back.store.order.domain.OrderProduct;
-import store.global.dto.ProductNameQuantity;
 import store.back.store.order.repository.OrderRepository;
 import store.back.store.product.domain.Products;
 import store.back.store.promotion.domain.Promotions;
@@ -50,13 +49,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public OrderResponseDTO order(OrderRequestDTO orderRequestDTO) {
-        List<ProductNameQuantity> productNameQuantities = orderRequestDTO.orderItemRequestDTOS().stream()
-                .map(orderItemRequestDTO ->
-                        new ProductNameQuantity(orderItemRequestDTO.productName(), orderItemRequestDTO.quantity()))
-                .toList();
-        Order order = new Order(products, promotions, storage, productNameQuantities,
-                orderRequestDTO.lackAgreement(), orderRequestDTO.fillLackQuantity(),
-                orderRequestDTO.checkedFillable(), orderRequestDTO.checkedLackable());
+        Order order = new Order(products, promotions, storage, orderRequestDTO.orderedItems());
 
         orderRepository.save(order);
         return new OrderResponseDTO(order.getUuid());

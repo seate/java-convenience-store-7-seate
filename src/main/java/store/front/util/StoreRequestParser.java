@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import store.global.dto.ProductNameQuantity;
 import store.front.exception.InvalidOrderRequestException;
+import store.global.dto.request.OrderedItem;
 import store.global.status.Agreement;
 
 public class StoreRequestParser {
@@ -15,7 +15,7 @@ public class StoreRequestParser {
             .compile(String.format("^%s(,%s)*$", itemPattern.pattern(), itemPattern.pattern()));
 
 
-    public static List<ProductNameQuantity> parseOrder(final String orderString) {
+    public static List<OrderedItem> parseOrder(final String orderString) {
         validateOrderString(orderString);
         return findItems(orderString);
     }
@@ -27,16 +27,16 @@ public class StoreRequestParser {
         }
     }
 
-    private static List<ProductNameQuantity> findItems(final String orderString) {
-        ArrayList<ProductNameQuantity> productNameQuantities = new ArrayList<>();
+    private static List<OrderedItem> findItems(final String orderString) {
+        List<OrderedItem> orderItems = new ArrayList<>();
         final Matcher itemMatcher = itemPattern.matcher(orderString);
         while (itemMatcher.find()) {
             String productName = itemMatcher.group(1); // 물품 이름
             int quantity = Integer.parseInt(itemMatcher.group(2)); // 물품 수량
-            productNameQuantities.add(new ProductNameQuantity(productName, quantity));
+            orderItems.add(OrderedItem.createDefault(productName, quantity));
         }
 
-        return productNameQuantities;
+        return orderItems;
     }
 
     public static Agreement parseAgreement(final String isMembership) {

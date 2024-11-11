@@ -5,6 +5,7 @@ import store.back.store.order.util.CalculatedQuantities;
 import store.back.store.product.domain.Product;
 import store.back.store.promotion.domain.Promotion;
 import store.back.store.storage.domain.Storage;
+import store.global.dto.request.OrderedItem;
 
 public class OrderLine {
 
@@ -16,26 +17,25 @@ public class OrderLine {
     }
 
     public static OrderLine createPromotionedOrderLine(Product product, Promotion promotion,
-                                                       Storage storage, Integer requestQuantity,
-                                                       Boolean lackAgreement, Boolean fillLackQuantity,
-                                                       Boolean checkedFillable, Boolean checkedLackable) {
+                                                       Storage storage, OrderedItem orderedItem) {
         Integer promotedQuantity = storage.getQuantity(product.getName(), true);
         Integer notPromotedQuantity = storage.getQuantity(product.getName(), false);
-        CalculatedQuantities calculatedQuantities = OrderQuantityCalculator.calculate(requestQuantity, promotedQuantity,
-                notPromotedQuantity, promotion.getBuyQuantity(), promotion.getFreeQuantity(), product.getName(),
-                promotion.isValid(), lackAgreement, fillLackQuantity, checkedFillable, checkedLackable
-        );
+
+        CalculatedQuantities calculatedQuantities = OrderQuantityCalculator.calculate(promotedQuantity,
+                notPromotedQuantity, promotion.getBuyQuantity(), promotion.getFreeQuantity(), promotion.isValid(),
+                orderedItem);
+
         return new OrderLine(product,
                 calculatedQuantities.totalQuantity(), calculatedQuantities.promotedQuantity(),
                 calculatedQuantities.freeQuantity());
     }
 
-    public static OrderLine createNotPromotionedOrderLine(Product product, Storage storage, Integer quantity) {
+    public static OrderLine createNotPromotionedOrderLine(Product product, Storage storage, OrderedItem orderedItem) {
         Integer promotedQuantity = storage.getQuantity(product.getName(), true);
         Integer notPromotedQuantity = storage.getQuantity(product.getName(), false);
 
-        CalculatedQuantities calculatedQuantities = OrderQuantityCalculator.calculate(quantity, promotedQuantity,
-                notPromotedQuantity, 1, 0, product.getName(), false, false, true, false, false);
+        CalculatedQuantities calculatedQuantities = OrderQuantityCalculator.calculate(promotedQuantity,
+                notPromotedQuantity, 1, 0, false, orderedItem);
 
         return new OrderLine(product, calculatedQuantities.totalQuantity(), calculatedQuantities.promotedQuantity(),
                 calculatedQuantities.freeQuantity());

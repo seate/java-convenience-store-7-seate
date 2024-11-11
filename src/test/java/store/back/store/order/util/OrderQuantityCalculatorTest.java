@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import store.back.store.order.exception.NeedMorePromotedProductException;
 import store.back.store.storage.exception.LackProductException;
 import store.back.store.storage.exception.LackPromotedProductException;
+import store.global.dto.request.OrderedItem;
 
 class OrderQuantityCalculatorTest {
 
@@ -18,9 +19,9 @@ class OrderQuantityCalculatorTest {
                    Boolean fillLackQuantity, Boolean checkedFillable, Boolean checkedLackable,
                    CalculatedQuantities expected) {
         // when
-        CalculatedQuantities calculated = OrderQuantityCalculator.calculate(requestQuantity, promotedQuantity,
-                notPromotedQuantity, buyQuantity, freeQuantity, productName, isPromoted, lackAgreement,
-                fillLackQuantity, checkedFillable, checkedLackable);
+        CalculatedQuantities calculated = OrderQuantityCalculator.calculate(promotedQuantity,
+                notPromotedQuantity, buyQuantity, freeQuantity, isPromoted, new OrderedItem(productName,
+                        requestQuantity, lackAgreement, fillLackQuantity, checkedFillable, checkedLackable));
 
         // then
         Assertions.assertThat(calculated).isEqualTo(expected);
@@ -44,9 +45,9 @@ class OrderQuantityCalculatorTest {
                         Boolean fillLackQuantity, Boolean checkedFillable, Boolean checkedLackable,
                         Class<? extends Exception> expectedExceptionClass) {
         // when
-        Assertions.assertThatThrownBy(() -> OrderQuantityCalculator.calculate(requestQuantity, promotedQuantity,
-                notPromotedQuantity, buyQuantity, freeQuantity, productName, isPromoted, lackAgreement,
-                fillLackQuantity, checkedFillable, checkedLackable))
+        Assertions.assertThatThrownBy(() -> OrderQuantityCalculator.calculate(promotedQuantity,
+                notPromotedQuantity, buyQuantity, freeQuantity, isPromoted, new OrderedItem(productName,
+                        requestQuantity, lackAgreement, fillLackQuantity, checkedFillable, checkedLackable)))
                 .isInstanceOf(expectedExceptionClass);
     }
 
