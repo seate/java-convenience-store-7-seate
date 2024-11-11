@@ -6,6 +6,7 @@ import store.back.store.product.domain.Product;
 import store.back.store.product.domain.Products;
 import store.back.store.promotion.domain.Promotions;
 import store.back.store.storage.domain.Storage;
+import store.global.dto.ProductNameQuantity;
 
 public class Order {
 

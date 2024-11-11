@@ -5,7 +5,7 @@ import store.back.global.annotation.Service;
 import store.back.store.order.domain.Membership;
 import store.back.store.order.domain.Order;
 import store.back.store.order.domain.OrderProduct;
-import store.back.store.order.domain.ProductNameQuantity;
+import store.global.dto.ProductNameQuantity;
 import store.back.store.order.repository.OrderRepository;
 import store.back.store.product.domain.Products;
 import store.back.store.promotion.domain.Promotions;

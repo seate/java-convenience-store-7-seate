@@ -5,7 +5,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import store.back.store.order.domain.ProductNameQuantity;
+import store.global.dto.ProductNameQuantity;
 import store.global.exception.CustomIllegalArgumentException;
 
 class StoreRequestParserTest {

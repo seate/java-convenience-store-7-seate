@@ -2,7 +2,7 @@ package store.front.view;
 
 import camp.nextstep.edu.missionutils.Console;
 import java.util.List;
-import store.back.store.order.domain.ProductNameQuantity;
+import store.global.dto.ProductNameQuantity;
 import store.front.util.StoreRequestParser;
 import store.global.dto.request.OrderRequestDTO;
 import store.global.status.Agreement;

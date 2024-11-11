@@ -1,4 +1,4 @@
-package store.back.store.order.domain;
+package store.global.dto;
 
 public record ProductNameQuantity(String productName, Integer quantity) {
 }

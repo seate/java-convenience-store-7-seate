@@ -1,7 +1,7 @@
 package store.global.dto.request;
 
 import java.util.List;
-import store.back.store.order.domain.ProductNameQuantity;
+import store.global.dto.ProductNameQuantity;
 
 public record OrderRequestDTO(List<OrderItemRequestDTO> orderItemRequestDTOS,
                               Boolean lackAgreement, Boolean fillLackQuantity,

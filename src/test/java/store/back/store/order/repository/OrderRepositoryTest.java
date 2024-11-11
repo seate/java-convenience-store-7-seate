@@ -6,7 +6,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import store.back.store.order.domain.Order;
-import store.back.store.order.domain.ProductNameQuantity;
+import store.global.dto.ProductNameQuantity;
 import store.back.store.product.domain.Products;
 import store.back.store.product.entity.repository.ProductEntityRepository;
 import store.back.store.promotion.domain.Promotions;
