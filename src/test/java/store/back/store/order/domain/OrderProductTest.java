@@ -2,7 +2,7 @@ package store.back.store.order.domain;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import store.back.store.order.exception.NoProductInOrderException;
+import store.back.store.order.exception.OrderQuantityUnderZeroException;
 import store.back.store.product.domain.Product;
 import store.back.store.product.entity.entity.ProductEntity;
 
@@ -22,6 +22,6 @@ class OrderProductTest {
         Product product = Product.from(productEntity);
 
         Assertions.assertThatThrownBy(() -> OrderProduct.from(product, 0, promotedQuantity, freeQuantity))
-                .isInstanceOf(NoProductInOrderException.class);
+                .isInstanceOf(OrderQuantityUnderZeroException.class);
     }
 }
