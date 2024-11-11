@@ -78,9 +78,7 @@ public class FrontApplication {
                 return function.apply(param);
             } catch (CustomIllegalArgumentException e) {
                 StoreResponseView.printErrorMessage(e.getMessage());
-            } /*catch (Exception e) {
-                System.out.println("why?: " + e.getMessage());
-            }*/
+            }
         }
     }
 
