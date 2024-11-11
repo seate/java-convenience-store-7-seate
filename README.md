@@ -49,7 +49,7 @@
     - 예외 상황: 순환 참조, bean이 존재하지 않는 경우, bean이 여러 개 존재하는 경우
 - [X] project scan, bean container 관리 기능
 - [X] FrontController과 백 애플리케이션 기반 기능
-- [ ] front와 back의 통신 기능
+- [X] front와 back의 통신 기능
 - [ ] 프론트 애플리케이션 로직 및 재시도 기능
 - [X] 파일 읽기 기능
 
