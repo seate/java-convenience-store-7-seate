@@ -1,13 +1,12 @@
 package store;
 
-import camp.nextstep.edu.missionutils.test.NsTest;
-import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
-
 import static camp.nextstep.edu.missionutils.test.Assertions.assertNowTest;
 import static camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import camp.nextstep.edu.missionutils.test.NsTest;
+import java.time.LocalDate;
+import org.junit.jupiter.api.Test;
 
 class ApplicationTest extends NsTest {
     @Test
@@ -42,6 +41,22 @@ class ApplicationTest extends NsTest {
         assertSimpleTest(() -> {
             run("[비타민워터-3],[물-2],[정식도시락-2]", "N", "N");
             assertThat(output().replaceAll("\\s", "")).contains("내실돈18,300");
+        });
+    }
+
+    @Test
+    void 주문_상품_없음() {
+        assertSimpleTest(() -> {
+            run("[컵라면-1]", "N", "[컵라면-1]", "Y", "N", "Y", "[물-1]", "N", "N");
+            assertThat(output()).containsOnlyOnce("컵라면 1,700원 재고 없음 MD추천상품");
+        });
+    }
+
+    @Test
+    void 상품_0개_발생() {
+        assertSimpleTest(() -> {
+            run("[컵라면-1],[감자칩-1]", "N", "N", "N");
+            assertThat(output().replaceAll("\\s", "")).contains("내실돈1,500");
         });
     }
 
